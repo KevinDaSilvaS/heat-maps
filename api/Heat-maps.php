@@ -14,19 +14,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $data = json_decode(file_get_contents("php://input"));
         $validate->validateClickFields($data);
-
-        $hasDate = $validate->hasDate($data);
+        $validate->validatePageNumber($data->pageNumber, $userToken);
         
-        $fields = "token,posX,posY"; 
         $positionX = mysqli_real_escape_string($mysqli_connection,$data->positionX);
         $positionY = mysqli_real_escape_string($mysqli_connection,$data->positionY);
-        $values = "'$userToken','$positionX','$positionY'";
+        $pageNumber = mysqli_real_escape_string($mysqli_connection,$data->pageNumber);
 
-        if ($hasDate) {
-            $date = mysqli_real_escape_string($mysqli_connection,$data->date);
-            $fields = "token,date,posX,posY"; 
-            $values = "'$userToken','$date','$positionX','$positionY'";
-        }
+        $date = date('Y-m-d');
+        //$hour = date('H:i:s');
+        $fields = "token,date,posX,posY,page_number"; 
+        $values = "'$userToken','$date','$positionX','$positionY','$pageNumber'";
 
         $insertLog = $db->insertFields("logs",$fields,$values);
 
@@ -42,8 +39,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'GET':
         $userToken = mysqli_real_escape_string($mysqli_connection,filter_input(INPUT_GET,"token"));
+        $pageNumber = mysqli_real_escape_string($mysqli_connection,filter_input(INPUT_GET,"pagen"));
+
         $validate->existsToken($userToken);
         $validate->validateToken($userToken);
+        $validate->validatePageNumber($pageNumber, $userToken);
 
         $start = mysqli_real_escape_string($mysqli_connection,filter_input(INPUT_GET,"start"));
         $end = mysqli_real_escape_string($mysqli_connection,filter_input(INPUT_GET,"end"));
@@ -52,7 +52,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $limit = mysqli_real_escape_string($mysqli_connection,filter_input(INPUT_GET,"limit"));
         $hasLimit = $validate->hasLimit($limit);
 
-        $conditional = " posX = posX AND posY = posY AND token = '$userToken' ";
+        $conditional = " posX = posX AND posY = posY AND 
+        token = '$userToken' AND page_number = '$pageNumber'";
 
         if ($hasPeriod) {
             $conditional .= " AND date BETWEEN '$start' AND '$end'";

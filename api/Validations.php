@@ -87,15 +87,33 @@ final class Validations{
 
     }
 
-    public function hasDate($data)
+    public function validatePageNumber($pageNumber, $token)
     {
-        $format = "Y-m-d";
-        if (isset($data->date)) {
-            $d = DateTime::createFromFormat($format, $data->date);
-            return $d && $d->format($format) == $data->date;
+        if (!intval($pageNumber) || $pageNumber < 0) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>"invalid page number expecting integer received: " 
+            .$pageNumber. ".Please inform a valid integer."));
+            exit;
         }
 
-        return false;
+        $getMaxPages = $this->db->selectWhere("max_pages","tokens","token = '$token'");
+        if (!is_array($getMaxPages)) {
+            
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>"token doens´t exists please check and try again"));
+            exit;
+        }
+
+        if ($pageNumber > $getMaxPages[0]['max_pages']) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(
+                array("response"=>"You´ve reached your max pages number: " . 
+                $getMaxPages[0]['max_pages'] . "contact us for a upgrade at example.com")
+            );
+            exit;
+        }
+
+        return true;
     }
 
     public function hasLimit($limit)

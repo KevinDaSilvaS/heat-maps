@@ -1,27 +1,16 @@
 var token = "1fcbd791bba0ff9784acba0e898f6af5";
+
+const element = document.getElementsByTagName("html")[0];
+element.addEventListener("click", getPosition, true);
+
+const pageNumber = "1";
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const t = urlParams.get('t')
 if (t == token) {
     displayClicks();
 }
-
-const element = document.getElementsByTagName("html")[0];
-element.addEventListener("click", getPosition, true);
-
-const today = new Date();
-
-month = today.getMonth()+1;
-if (month < 10) {
-    month = "0" + month;
-}
-
-day = today.getDate();
-if (day < 10) {
-    day = "0" + day;
-}
-
-const fullDate = today.getFullYear()+'-'+month+'-'+day;
 
 function getPosition(click) {
     const xPosition = click.clientX;
@@ -31,7 +20,6 @@ function getPosition(click) {
 
     logData.positionX = xPosition;
     logData.positionY = yPosition;
-    logData.date = fullDate;
 
     saveClickData(logData);
 
@@ -43,9 +31,9 @@ function saveClickData(dataObject) {
     console.log(dataObject)
 
     const dataAjax = {
-        "date" : dataObject.date,
         "positionX" : dataObject.positionX,
         "positionY" : dataObject.positionY,
+        "pageNumber" : pageNumber,
     };
 
     const pageurl = 'http://localhost/heat-maps/api/Heat-maps.php?token=' + token;
@@ -73,8 +61,9 @@ function saveClickData(dataObject) {
 }
 
 function displayClicks() {
+    const sendUrl = 'http://localhost/heat-maps/api/Heat-maps.php?token=' + token + "&pagen=" + pageNumber;
     jQuery.ajax({
-        url : 'http://localhost/heat-maps/api/Heat-maps.php?token=' + token ,
+        url : sendUrl,
         dataType : 'json',
         type : 'GET',
 
