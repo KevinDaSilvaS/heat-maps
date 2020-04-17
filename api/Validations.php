@@ -108,7 +108,7 @@ final class Validations{
             header("HTTP/1.1 400 BAD REQUEST");
             echo json_encode(
                 array("response"=>"You´ve reached your max pages number: " . 
-                $getMaxPages[0]['max_pages'] . "contact us for a upgrade at example.com")
+                $getMaxPages[0]['max_pages'] . " contact us for a upgrade at example.com")
             );
             exit;
         }

@@ -3,7 +3,7 @@ var token = "1fcbd791bba0ff9784acba0e898f6af5";
 const element = document.getElementsByTagName("html")[0];
 element.addEventListener("click", getPosition, true);
 
-const pageNumber = "1";
+const pageNumber = 1;
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);

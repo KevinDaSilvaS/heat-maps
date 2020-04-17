@@ -59,7 +59,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $conditional .= " AND date BETWEEN '$start' AND '$end'";
         }
 
-        $limitQuery = '';
+        $limitQuery = "ORDER BY date DESC LIMIT 150";
         if ($hasLimit) {
             $limitQuery = "ORDER BY date DESC LIMIT " . $limit;
         }
