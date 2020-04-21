@@ -11,12 +11,71 @@ final class Validations{
 
     public function validateString(string $message)
     {
-        return strlen($message) <= 45 && !is_numeric($message);
+        if(strlen($message) <= 0 || strlen($message) >= 145 
+        || is_numeric($message) || $message === null){
+
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>"Invalid username."));
+            exit;
+        }
+    }
+
+    public function validateCharacters(string $message)
+    {
+        $pattern ='/[a-zA-Z]/';
+
+        if (preg_match($pattern, $message)) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>
+            "Phone number should not contain characters between [A-Z]."));
+            exit;
+        }
+    }
+
+    public function validatePasswords($password)
+    {
+        if (strlen($password) < 10 || $password === null) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>
+            "Password should not be empty and should have at least ten characters."));
+            exit;
+        }
+
+        $pattern ='/[a-zA-Z]/';
+
+        if (!preg_match($pattern, $password)) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>
+            "Password should contain at least one character in a range between [A - Z]."));
+            exit;
+        }
+
+        $pattern ='/[0-9]/';
+
+        if (!preg_match($pattern, $password)) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>
+            "Password should contain at least one numeric characters in a range between [0 - 9]."));
+            exit;
+        }
     }
 
     public function validateMail(string $email)
     {
-        return filter_var($email,FILTER_VALIDATE_EMAIL);
+        if (!filter_var($email,FILTER_VALIDATE_EMAIL)) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>"email addres invalid"));
+            exit;
+        }
+
+        $searchEmail = $this->db->selectWhere("email","tokens","email = '$email'");
+        if (is_array($searchEmail)) {
+            
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>
+            "Email is already being used in a another acount.Forgot your password go to example.com and reset your password."));
+            exit;
+        }
     }
 
     public function validateInteger(string $integer)

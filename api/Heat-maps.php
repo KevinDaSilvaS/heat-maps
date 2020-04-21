@@ -1,5 +1,5 @@
 <?php
-header("Content-Type: application/json", true);
+//header("Content-Type: application/json", true);
 
 $path = '..'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR;
 
