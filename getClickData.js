@@ -7,7 +7,8 @@ const pageNumber = 1;
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-const t = urlParams.get('t')
+const t = urlParams.get('t');
+
 if (t == token) {
     displayClicks();
 }

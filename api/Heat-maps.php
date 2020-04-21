@@ -1,12 +1,16 @@
 <?php
 header("Content-Type: application/json", true);
-require_once ('Validations.php');
-require_once ('HandlerDataBase.php');
+
+$path = '..'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR;
+
+require_once ($path . 'Validations.php');
+require_once ($path . 'HandlerDataBase.php');
 
 $db = new HandlerDataBase();
 $validate = new Validations($db);
 
 switch ($_SERVER['REQUEST_METHOD']) {
+
     case 'POST':
         $userToken = mysqli_real_escape_string($mysqli_connection,filter_input(INPUT_GET,"token"));
         $validate->existsToken($userToken);
@@ -36,6 +40,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         header("HTTP/1.1 201 CREATED");
         echo json_encode(array("response"=>"New log successfully created."));
         break;
+        
 
     case 'GET':
         $userToken = mysqli_real_escape_string($mysqli_connection,filter_input(INPUT_GET,"token"));
