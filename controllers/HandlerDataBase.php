@@ -1,6 +1,11 @@
 <?PHP
 include('config.php');
 class HandlerDataBase {
+
+    public function __construct()
+    {
+        
+    }
     
     public function selectFields($fields = "*",$tableName)
     {

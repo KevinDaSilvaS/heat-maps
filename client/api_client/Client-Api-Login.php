@@ -13,7 +13,38 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $data = json_decode(file_get_contents("php://input"));
 
+        if (!isset($data->email)) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>
+            "Email not passed or passed in a 
+            incorrect format make sure your requuisition is post and the name is email."));
+            exit;
+        }
+
+        if (!isset($data->password)) {
+            header("HTTP/1.1 400 BAD REQUEST");
+            echo json_encode(array("response"=>
+            "Password not passed or passed in a 
+            incorrect format make sure your requuisition is post and the name is password."));
+            exit;
+        }
+
+        $email = mysqli_real_escape_string($mysqli_connection,$data->email);
+        $password = mysqli_real_escape_string($mysqli_connection,$data->password);
+        $password = md5($password);
+
+        $searchLogin = $db->selectCountWhere("id","tokens","email='$email' AND password='$password'");
         
+        if ($searchLogin == 1) {
+            header("HTTP/1.1 201 CREATED");
+            echo json_encode(array("response"=>"User logged sucessfully."));
+            exit;
+        }
+
+        header("HTTP/1.1 400 BAD REQUEST");
+        echo json_encode(array("response"=>
+        "User not find to add a new user use example.com/Client-Api."));
+
         break;
 }
 ?>
