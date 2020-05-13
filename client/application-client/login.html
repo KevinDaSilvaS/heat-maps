@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Heat maps are a great way to see the traffic in your web site and we manage to turn it free for you">
+    <meta name="keywords" content="heat-maps heat maps data mapa de calor mapas ">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="colors.css">
+    <link rel="stylesheet" href="login.css">
+    <title>Login</title>
+</head>
+<body class="norwegian-gradient">
+    <header class="z-depth-2">
+        <nav class="norwegian-red">
+        </nav>
+    </header>
+
+    <div id="main" class="row content">
+        <div id="register" class=" col s12 m6 l6">
+            <div class="card white">
+                <div id="slide-register hide"></div>
+                
+                <div id="form-register" class="card-content ">
+                    <div class="card-title">Register</div>
+
+                    <form class="row" id="reg" action="" method="POST">
+                        
+                        <div class="input-field col s12 ">
+                            <input type="text" id="name" required>
+                            <label for="name">Name</label>
+                        </div>
+
+                        <div class="input-field col s12 ">
+                            <input type="text" id="phone">
+                            <label for="phone">Phone Number</label>
+                        </div>
+
+                        <div class="input-field col s12 ">
+                            <input type="email" id="email" required>
+                            <label for="email">Email</label>
+                        </div>
+
+                        <div class="input-field col s12 ">
+                            <input type="password" id="password" required>
+                            <label for="password">Password</label>
+                        </div>
+
+                        <div class="input-field col s12 ">
+                            <input type="password" id="confirm-password" required>
+                            <label for="confirm-password">Confirm Password</label>
+                        </div>
+
+                        <div class="input-field col s12 ">
+                            <a href="" class="btn norwegian-red">Register</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class=" col s12 m6 l6">
+            <div id="login" class="card white">
+                <div id="slide-login hide"></div>
+                <div class="card-content equal">
+                    <div class="card-title">Login</div>
+
+                    <form id="client" class="row" action="" method="POST">
+                        
+                        <div class="input-field col s12 ">
+                            <input type="email" id="email" required>
+                            <label for="email">Email</label>
+                        </div>
+
+                        <div class="input-field col s12 ">
+                            <input type="password" id="password" required>
+                            <label for="password">Password</label>
+                        </div>
+
+                        <div class="input-field col s12 ">
+                            <a href="" class="btn norwegian-red">Login</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer norwegian-blue">
+        <div class="container">
+            <div class="footer-copyright">
+                <div class="container">
+                © 2020 Created by kevin da silva
+                <a class="grey-text text-lighten-4 right tooltipped" 
+                    data-position="top" data-tooltip="know more about the project" 
+                    href="#!"><img src="../../media/GitHub-Mark-32px.png" 
+                    alt="Click to know more about the project">
+                </a>
+                </div>
+              </div>
+        </div>
+    </footer>
+    
+    <script src="login.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+          document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.tooltipped');
+                var instances = M.Tooltip.init(elems);
+          });
+    </script>
+</body>
+</html>

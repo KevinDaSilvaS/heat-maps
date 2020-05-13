@@ -1,0 +1,19 @@
+.norwegian-red{
+    background-color: #C8102E;
+}
+
+.norwegian-blue{
+    background-color: #003087;
+}
+
+.norwegian-red-text{
+    color: #C8102E;
+}
+
+.norwegian-blue-text{
+    color: #003087;
+}
+
+.norwegian-gradient{
+    background: linear-gradient(180deg, rgba(200,16,46,1) 0%, #003087 100%);
+}
