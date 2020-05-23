@@ -37,7 +37,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $values = "'$token','$expireDate','$email','$name','$maxPages','$password'";
 
         if (isset($data->phone)) {
-            $validate->validateString($data->phone);
             $validate->validateCharacters($data->phone);
             $phone = mysqli_real_escape_string($mysqli_connection,$data->phone);
 

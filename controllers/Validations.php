@@ -73,7 +73,7 @@ final class Validations{
             
             header("HTTP/1.1 400 BAD REQUEST");
             echo json_encode(array("response"=>
-            "Email is already being used in a another acount.Forgot your password go to example.com and reset your password."));
+            "Email is already being used in a another account.Forgot your password go to example.com and reset your password."));
             exit;
         }
     }

@@ -24,37 +24,42 @@
                 <div id="form-register" class="card-content ">
                     <div class="card-title">Register</div>
 
-                    <form class="row" id="reg" action="" method="POST">
+                    <form class="row" id="reg" action="" method="POST" enctype="multipart/form-data">
                         
                         <div class="input-field col s12 ">
-                            <input type="text" id="name" required>
+                            <input type="text" name="name" id="rname" required>
                             <label for="name">Name</label>
                         </div>
 
                         <div class="input-field col s12 ">
-                            <input type="text" id="phone">
+                            <input type="text" name="phone" id="rphone">
                             <label for="phone">Phone Number</label>
                         </div>
 
                         <div class="input-field col s12 ">
-                            <input type="email" id="email" required>
+                            <input type="email" name="email" id="remail" required>
                             <label for="email">Email</label>
                         </div>
 
                         <div class="input-field col s12 ">
-                            <input type="password" id="password" required>
+                            <input type="password" name="password" id="rpassword" required>
                             <label for="password">Password</label>
                         </div>
 
                         <div class="input-field col s12 ">
-                            <input type="password" id="confirm-password" required>
+                            <input type="password" id="rconfirm-password" required>
                             <label for="confirm-password">Confirm Password</label>
                         </div>
 
                         <div class="input-field col s12 ">
-                            <a href="" class="btn norwegian-red">Register</a>
+                            <p id="msg-register"></p>
                         </div>
 
+                        <div class="input-field col s12 ">
+                            <button class="btn norwegian-red">Register</button>
+                        </div>
+
+                        
                     </form>
                 </div>
             </div>
@@ -76,6 +81,10 @@
                         <div class="input-field col s12 ">
                             <input type="password" id="password" required>
                             <label for="password">Password</label>
+                        </div>
+
+                        <div class="input-field col s12 ">
+                            <p id="msg-register"></p>
                         </div>
 
                         <div class="input-field col s12 ">
@@ -104,13 +113,95 @@
         </div>
     </footer>
     
-    <script src="login.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
           document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.tooltipped');
                 var instances = M.Tooltip.init(elems);
           });
+    </script>
+    <script>
+        var myHeaders = new Headers([
+            ['Content-Type', 'application/json']
+        ]);
+
+        const formReg = document.getElementById("reg");
+        formReg.addEventListener("submit", function(e){
+            e.preventDefault();
+            
+            validateRegisterForm();
+        });
+
+        function validateRegisterForm(){
+            document.getElementById("msg-register").innerHTML = "";
+            const confirm = document.getElementById("rconfirm-password");
+            const password = document.getElementById("rpassword");
+            const phone = document.getElementById("rphone");
+            const name = document.getElementById("rname");
+            const email = document.getElementById("remail");
+
+            if (confirm.value !== password.value) {
+                confirm.classList.add("error-bottom");
+                password.classList.add("error-bottom");
+                document.getElementById("msg-register").innerHTML += 
+                `passwords should be equal in both fields <br>`;
+                return;
+            }
+
+            if (phone.value !== '' && phone.value.match("[A-Za-z]")) {
+                phone.classList.add("error-bottom");
+                document.getElementById("msg-register").innerHTML += 
+                `Your phone number should not contain alpha characters [A-Za-z] <br>`;
+                return;
+            }
+
+            confirm.classList.remove("error-bottom");
+            password.classList.remove("error-bottom");
+            phone.classList.remove("error-bottom");
+
+            const data = new Object;
+            data.email = email.value;
+            data.name = name.value;
+            data.phone = phone.value;
+            data.password = password.value;
+
+            sendRegisterForm(data);
+        }
+
+        function sendRegisterForm(data){
+            const url = `http://localhost/heat-maps/client/api_client/Client-Api.php`;
+
+            const myInit = { 
+                method: 'POST',
+                headers: myHeaders,
+                body: JSON.stringify(data),
+                mode: 'cors',
+            };
+
+            const myRequest = new Request(url, myInit);
+
+            fetch(myRequest)
+            .then(function(response) {
+                return response;
+            })
+            .then(function(json) {
+                console.log(json.status);
+                document.getElementById("msg-register").innerHTML = "";
+                if (json.status > 200) {
+                    document.getElementById("msg-register").innerHTML = 
+                    `An error occurred : <br>
+                    <ul>
+                        <li>Your password should contain at least 10 characters</li>
+                        <li>Your password should contain at least 1 numeric and/or 1 [A-Za-z] characters</li>
+                        <li>Your phone number is not required but should contain numeric characters</li>
+                        <li>Check your email it could being used in another account.</li>
+                    </ul>`;
+                }
+                
+
+            });
+        }
+        
     </script>
 </body>
 </html>
