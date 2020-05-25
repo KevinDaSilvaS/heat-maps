@@ -25,7 +25,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             header("HTTP/1.1 400 BAD REQUEST");
             echo json_encode(array("response"=>
             "Password not passed or passed in a 
-            incorrect format make sure your requuisition is post and the name is password."));
+            incorrect format make sure your requisition is post and the name is password."));
             exit;
         }
 
@@ -33,11 +33,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $password = mysqli_real_escape_string($mysqli_connection,$data->password);
         $password = md5($password);
 
-        $searchLogin = $db->selectCountWhere("id","tokens","email='$email' AND password='$password'");
+        $searchLogin = $db->selectWhere("token","tokens","email='$email' AND password='$password'");
         
-        if ($searchLogin == 1) {
+        if (is_array($searchLogin)) {
+            $token = $searchLogin[0]["token"];
             header("HTTP/1.1 201 CREATED");
-            echo json_encode(array("response"=>"User logged sucessfully."));
+            echo json_encode(array(
+                "response"=>"User logged sucessfully.",
+                "token"=>$token,
+            ));
             exit;
         }
 

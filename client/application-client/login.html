@@ -84,11 +84,11 @@
                         </div>
 
                         <div class="input-field col s12 ">
-                            <p id="msg-register"></p>
+                            <p id="msg-login"></p>
                         </div>
 
                         <div class="input-field col s12 ">
-                            <a href="" class="btn norwegian-red">Login</a>
+                            <button class="btn norwegian-red">Login</button>
                         </div>
 
                     </form>
@@ -120,6 +120,7 @@
                 var instances = M.Tooltip.init(elems);
           });
     </script>
+    <script src="login.js"></script>
     <script>
         var myHeaders = new Headers([
             ['Content-Type', 'application/json']
@@ -132,75 +133,12 @@
             validateRegisterForm();
         });
 
-        function validateRegisterForm(){
-            document.getElementById("msg-register").innerHTML = "";
-            const confirm = document.getElementById("rconfirm-password");
-            const password = document.getElementById("rpassword");
-            const phone = document.getElementById("rphone");
-            const name = document.getElementById("rname");
-            const email = document.getElementById("remail");
-
-            if (confirm.value !== password.value) {
-                confirm.classList.add("error-bottom");
-                password.classList.add("error-bottom");
-                document.getElementById("msg-register").innerHTML += 
-                `passwords should be equal in both fields <br>`;
-                return;
-            }
-
-            if (phone.value !== '' && phone.value.match("[A-Za-z]")) {
-                phone.classList.add("error-bottom");
-                document.getElementById("msg-register").innerHTML += 
-                `Your phone number should not contain alpha characters [A-Za-z] <br>`;
-                return;
-            }
-
-            confirm.classList.remove("error-bottom");
-            password.classList.remove("error-bottom");
-            phone.classList.remove("error-bottom");
-
-            const data = new Object;
-            data.email = email.value;
-            data.name = name.value;
-            data.phone = phone.value;
-            data.password = password.value;
-
-            sendRegisterForm(data);
-        }
-
-        function sendRegisterForm(data){
-            const url = `http://localhost/heat-maps/client/api_client/Client-Api.php`;
-
-            const myInit = { 
-                method: 'POST',
-                headers: myHeaders,
-                body: JSON.stringify(data),
-                mode: 'cors',
-            };
-
-            const myRequest = new Request(url, myInit);
-
-            fetch(myRequest)
-            .then(function(response) {
-                return response;
-            })
-            .then(function(json) {
-                console.log(json.status);
-                document.getElementById("msg-register").innerHTML = "";
-                if (json.status > 200) {
-                    document.getElementById("msg-register").innerHTML = 
-                    `An error occurred : <br>
-                    <ul>
-                        <li>Your password should contain at least 10 characters</li>
-                        <li>Your password should contain at least 1 numeric and/or 1 [A-Za-z] characters</li>
-                        <li>Your phone number is not required but should contain numeric characters</li>
-                        <li>Check your email it could being used in another account.</li>
-                    </ul>`;
-                }
-                
-
-            });
-        }
+        const formLogin = document.getElementById("client");
+        formLogin.addEventListener("submit", function(e){
+            e.preventDefault();
+            
+            sendLoginData();
+        });
         
     </script>
 </body>
