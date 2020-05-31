@@ -80,13 +80,16 @@ function sendLoginData(){
     fetch(myRequest)
     .then(function(response) {
         document.getElementById("msg-login").innerHTML = "";
-        if (response.status === 200) {
-            return;
-        }
         return response.json();
     })
     .then(function(json) {
         console.log(json);
         document.getElementById("msg-login").innerHTML = `${json.response}`;
+        if (typeof(json.token) === "undefined") {
+            return;
+        }
+        localStorage.setItem("token", json.token);
+        window.location.href = "dashboard.html";
+        
     });
 }

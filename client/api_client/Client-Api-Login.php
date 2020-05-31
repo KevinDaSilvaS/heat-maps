@@ -17,7 +17,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             header("HTTP/1.1 400 BAD REQUEST");
             echo json_encode(array("response"=>
             "Email not passed or passed in a 
-            incorrect format make sure your requuisition is post and the name is email."));
+            incorrect format make sure your requisition is post and the name is email."));
             exit;
         }
 
