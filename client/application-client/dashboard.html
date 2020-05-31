@@ -22,19 +22,19 @@
                 <div class="card-content row">
                     <div class="col s12 card card-content row center-align">
                         <div class="">Total clicks today:</div>
-                        <h4>0</h4>
+                        <h4 id="today">0</h4>
                     </div>
                     <div class="col s12 card card-content row center-align">
                         <div class="">Total clicks this week:</div>
-                        <h4>0</h4>
+                        <h4 id="week">0</h4>
                     </div> 
                     <div class="col s12 card card-content row center-align">
                         <div class="">Total clicks 15 days ago</div>
-                        <h4>0</h4>
+                        <h4 id="15days">0</h4>
                     </div>
                     <div class="col s12 card  card-content row center-align">
                         <div class="">Total clicks 30 days ago</div>
-                        <h4>0</h4>
+                        <h4 id="1month">0</h4>
                     </div>
                     
                 </div>
@@ -59,5 +59,23 @@
     </footer>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+
+        if (token === null) {
+            window.location.href = "login.html";
+        }
+
+        fetch(`http://localhost/heat-maps/client/api_dashboard/Api-Dashboard.php?token=${token}`)
+        .then(function(response) {
+            return response.json();
+        }).then(function(json){
+
+            document.getElementById("today").innerHTML = json['today'];
+            document.getElementById("week").innerHTML = json['week-logs'];
+            document.getElementById("15days").innerHTML = json['15day-logs'];
+            document.getElementById("1month").innerHTML = json['30day-logs'];
+        });
+    </script>
 </body>
 </html>
